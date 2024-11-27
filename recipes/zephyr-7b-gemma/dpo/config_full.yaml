@@ -1,11 +1,26 @@
 # Model arguments
-model_name_or_path: HuggingFaceH4/zephyr-7b-gemma-sft-v0.1
+model_name_or_path: meta-llama/Llama-3.2-1B-Instruct
 torch_dtype: bfloat16
+
+# # LoRA arguments
+# use_peft: true
+# load_in_4bit: false
+# lora_r: 128
+# lora_alpha: 128
+# lora_dropout: 0.05
+# lora_target_modules:
+# - q_proj
+# - k_proj
+# - v_proj
+# - o_proj
+# - gate_proj
+# - up_proj
+# - down_proj
 
 # Data training arguments
 # For definitions, see: src/h4/training/config.py
 dataset_mixer:
-  argilla/dpo-mix-7k: 1.0
+  argilla/dpo-mix-7k: 0.25
 dataset_splits:
 - train
 - test
@@ -20,8 +35,8 @@ eval_steps: 100
 gradient_accumulation_steps: 8
 gradient_checkpointing: true
 gradient_checkpointing_kwargs:
-  use_reentrant: False
-hub_model_id: zephyr-7b-gemma-dpo
+  use_reentrant: false
+# hub_model_id: zephyr-7b-gemma-dpo
 learning_rate: 5.0e-7
 log_level: info
 logging_steps: 10
@@ -30,13 +45,15 @@ max_length: 1024
 max_prompt_length: 512
 num_train_epochs: 2
 optim: adamw_torch
-output_dir: data/zephyr-7b-gemma-dpo
-per_device_train_batch_size: 2
-per_device_eval_batch_size: 4
-push_to_hub: true
+# output_dir: data/zephyr-7b-gemma-dpo
+output_dir: data/Llama1B
+per_device_train_batch_size: 1
+per_device_eval_batch_size: 1
+push_to_hub: false
 report_to:
 - tensorboard
-- wandb
-save_strategy: "no"
+save_strategy: "steps"
+save_steps: 50
+save_total_limit: 1
 seed: 42
 warmup_ratio: 0.1
